@@ -1,9 +1,28 @@
 'use strict';
-
+/*
+	npm ln body-parser
+	npm ln chai
+	npm ln chai-http
+	npm ln cors
+	npm ln dotenv
+	npm ln express
+	npm ln fs
+	npm ln helmet
+	npm ln mocha
+	npm ln mongodb
+	npm ln mongoose
+	npm ln path
+	npm ln zombie
+	npm ln promise-foreach
+	npm ln request
+*/
 var express     = require('express');
 var bodyParser  = require('body-parser');
 var expect      = require('chai').expect;
 var cors        = require('cors');
+const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config({ path: path.resolve(process.cwd(), 'environment.txt') });
 
 var apiRoutes         = require('./routes/api.js');
 var fccTestingRoutes  = require('./routes/fcctesting.js');
@@ -27,9 +46,9 @@ app.route('/')
 //For FCC testing purposes
 fccTestingRoutes(app);
 
-//Routing for API 
-apiRoutes(app);  
-    
+//Routing for API
+apiRoutes(app);
+
 //404 Not Found Middleware
 app.use(function(req, res, next) {
   res.status(404)
