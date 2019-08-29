@@ -46,7 +46,7 @@ const getOneStock = (stockName, done) => {
 				price: data.profile.price,
 				likes: count
 			}
-			done(null, { errorCode: 0, data: {stockData:stockObj} })
+			done(null, { errorCode: 0, data: { stockData: stockObj } })
 		})
 	})
 }
@@ -217,7 +217,7 @@ const addMultiStockLike = (stockNames, ip, done) => {
 		// Execute save like
 		Promise.all(promiseArr).then((result) => {
 			promiseForeach.each(stockInfoList, [elm => {
-				return LikeStock.countDocuments({ stock: elm.symbol })
+				return LikeStock.countDocuments({ stock: elm.stock })
 			}], (arrResult, elm) => {
 				elm.likes = arrResult[0]
 				return elm
@@ -227,11 +227,13 @@ const addMultiStockLike = (stockNames, ip, done) => {
 					return
 				}
 				// Count different like
-				let dif = newList[0].likes - stockInfoList[1].likes
+				let dif = newList[0].likes - newList[1].likes
 				newList[0].rel_likes = dif
 				newList[1].rel_likes = 0 - dif
 				delete newList[0].likes
 				delete newList[1].likes
+				delete newList[0].count
+				delete newList[1].count
 				done(null, { errorCode: 0, data: { stockData: newList } })
 
 			})
