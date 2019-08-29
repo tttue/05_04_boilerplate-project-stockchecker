@@ -69,8 +69,38 @@ function isEmpty(obj) {
 	return true;
 }
 
+function apiProcessResult(res, next, err, info) {
+	if (err) {
+		next(err)
+	} else {
+		if(process.env.NODE_ENV==='test') {
+			writeOutputToConsole(err, info)
+		}
+		//console.log("Process", info);
+		if (info.errorCode === 0) {
+			if (info.data){
+				res.json(info.data);
+			} else {
+				res.send(info.message);
+			}
+		} else {
+			res.send(""+info.errorMsg);
+		}
+	}
+}
+
+const writeOutputToConsole = (err, data) => {
+	if (err) {
+		console.log("Error:", err)
+		return
+	}
+	console.log("Data: ", JSON.stringify(data))
+}
+
 exports.checkStringNotBlank = checkStringNotBlank;
 exports.checkDate = checkDate;
 exports.checkNumber = checkNumber;
 exports.checkId = checkId;
 exports.isEmpty = isEmpty;
+exports.apiProcessResult=apiProcessResult;
+exports.writeOutputToConsole=writeOutputToConsole;

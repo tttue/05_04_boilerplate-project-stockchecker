@@ -1,36 +1,25 @@
 @link = http://localhost:3000
-###
-GET https://finance.google.com/finance/info?q=NASDAQ&GOOG
-Accept:  */*
-Content-Type: application/x-www-form-urlencoded
 
-### Add one book
-POST {{link}}/api/books
-Accept:  */*
-Content-Type: application/x-www-form-urlencoded
-
-#title=test1
-
-### Get all book
-GET {{link}}/api/books
+### Delete stock data
+DELETE {{link}}/api/stock-prices?stock=vrtx&stock=wba&stock=wdc
 Accept:  */*
 
-###
-GET {{link}}/api/books/5d64db700c51ae54100d6d8f
+### get 1 stock
+GET {{link}}/api/stock-prices?stock=wdc
 Accept:  */*
 
-### Post comment
-POST {{link}}/api/books/5d64db700c51ae54100d6d8f
-Accept:  */*
-Content-Type: application/x-www-form-urlencoded
-
-comment=comment thu n+1
-
-### Delete one book
-DELETE {{link}}/api/books/5d661ccaa5f50203bc014b6e
+### invalid stock
+GET {{link}}/api/stock-prices?stock=abcdef
 Accept:  */*
 
+### get 2 stock
+GET {{link}}/api/stock-prices?stock=vrtx&stock=wba
+Accept:  */*
 
-### Delete all book
-DELETE {{link}}/api/books
+### like stock
+GET {{link}}/api/stock-prices?stock=vrtx&like=true
+Accept:  */*
+
+### like multi stock
+GET {{link}}/api/stock-prices?stock=vrtx&stock=wba&like=true
 Accept:  */*
