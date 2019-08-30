@@ -6,14 +6,13 @@
 	npm ln cors
 	npm ln dotenv
 	npm ln express
-	npm ln fs
 	npm ln helmet
 	npm ln mocha
 	npm ln mongodb
 	npm ln mongoose
 	npm ln path
-	npm ln zombie
 	npm ln promise-foreach
+	npm ln node-fetch
 	npm ln request
 */
 var express     = require('express');
