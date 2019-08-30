@@ -26,11 +26,13 @@ const LikeStock = mongoose.model('LikeStock', likeStockSchema)
 
 
 const getOneStock = (stockName, done) => {
-	var checkResult = tool.checkStringNotBlank(stockName, "stock", true)
-	if (checkResult) {
-		done(null, { errorCode: -2, errorMsg: checkResult })
+	let checkParamList = [
+		{ param: stockName, checkFunc: tool.checkStringNotBlank, paramName: "stockName" }
+	]
+	if (!tool.checkParams(checkParamList, done)){
 		return
 	}
+
 	stock.getStockInfo(stockName, (err, data) => {
 		if (err) {
 			done(err)
@@ -54,12 +56,12 @@ const getOneStock = (stockName, done) => {
 const getManyStock = (stockNames, done) => {
 	// Accept 2 stock only
 	stockNames = stockNames.slice(0, 2)
-	for (var elm of stockNames) {
-		var checkResult = tool.checkStringNotBlank(elm, "stock", true)
-		if (checkResult) {
-			done(null, { errorCode: -2, errorMsg: checkResult })
-			return
-		}
+	let checkParamList = stockNames.map(elm=>{
+		return { param: elm, checkFunc: tool.checkStringNotBlank, paramName: "stock" }
+	})
+
+	if (!tool.checkParams(checkParamList, done)){
+		return
 	}
 
 	var arrStock = stockNames.map(elm => {
@@ -111,9 +113,10 @@ const getManyStock = (stockNames, done) => {
  * @param callback done
  */
 const addLike = (stockName, ip, done) => {
-	var checkResult = tool.checkStringNotBlank(stockName, "stock", true)
-	if (checkResult) {
-		done(null, { errorCode: -2, errorMsg: checkResult })
+	let checkParamList = [
+		{ param: stockName, checkFunc: tool.checkStringNotBlank, paramName: "stockName" }
+	]
+	if (!tool.checkParams(checkParamList, done)){
 		return
 	}
 	stock.getStockInfo(stockName, (err, dataStock) => {
@@ -161,13 +164,14 @@ const addLike = (stockName, ip, done) => {
 const addMultiStockLike = (stockNames, ip, done) => {
 	// Accept 2 stock only
 	stockNames = stockNames.slice(0, 2)
-	for (var elm of stockNames) {
-		var checkResult = tool.checkStringNotBlank(elm, "stock", true)
-		if (checkResult) {
-			done(null, { errorCode: -2, errorMsg: checkResult })
-			return
-		}
+	let checkParamList = stockNames.map(elm=>{
+		return { param: elm, checkFunc: tool.checkStringNotBlank, paramName: "stock" }
+	})
+
+	if (!tool.checkParams(checkParamList, done)){
+		return
 	}
+
 	var arrStock = stockNames.map(elm => {
 		return {
 			stock: elm,
@@ -243,13 +247,14 @@ const addMultiStockLike = (stockNames, ip, done) => {
 
 
 const deleteLikeData = (stockNames, ip, done) => {
-	for (var elm of stockNames) {
-		var checkResult = tool.checkStringNotBlank(elm, "stock", true)
-		if (checkResult) {
-			done(null, { errorCode: -2, errorMsg: checkResult })
-			return
-		}
+	let checkParamList = stockNames.map(elm=>{
+		return { param: elm, checkFunc: tool.checkStringNotBlank, paramName: "stock" }
+	})
+
+	if (!tool.checkParams(checkParamList, done)){
+		return
 	}
+
 	let promiseArr = []
 	for (var elm of stockNames) {
 		promiseArr.push(LikeStock.deleteMany({ stock: elm, ip: ip }))
